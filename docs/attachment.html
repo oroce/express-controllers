@@ -1,0 +1,67 @@
+<!DOCTYPE html>  <html> <head>   <title>attachment.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="attachment.html">                 attachment.coffee               </a>                                           <a class="source" href="controller.html">                 controller.coffee               </a>                                           <a class="source" href="user.html">                 user.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               attachment.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <h3>Filename: attachment.coffee</h3>
+
+<h3>Author: oroce</h3>
+
+<h3>Description:</h3>
+
+<p>Attachment controller for <a href="http://expressjs.com">expressjs framework</a></p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>We require the <a href="user.html">user controller</a></p>
+
+<p>Attachment Controller extends the User Controller, which extends the Base Controller</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">UserController = </span><span class="nx">require</span> <span class="s2">&quot;./user&quot;</span>
+
+<span class="k">class</span> <span class="nx">AttachmentController</span> <span class="k">extends</span> <span class="nx">UserController</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>We have two routes, one for all requests, and one for get request.</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nv">routes:</span>
+		<span class="s2">&quot;all /user/:id/attachment/:aid.:format?&quot;</span><span class="o">:</span> <span class="s2">&quot;userExists attachmentExists&quot;</span>
+		<span class="s2">&quot;get /user/:id/attachment/:aid.:format?&quot;</span><span class="o">:</span> <span class="s2">&quot;getById&quot;</span>
+	
+	<span class="nv">initialize: </span><span class="nf">() -&gt;</span>
+	</pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>If you don't override the <code>userExists</code> method you can inherit from the <code>UserController</code>.
+Now we are okay with the inherited version.</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nv">___userExists: </span><span class="nf">( req, res, next ) -&gt;</span>
+		<span class="nv">isUserExists = </span><span class="nx">@_userExists</span><span class="p">(</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span> <span class="p">)</span>
+		
+		<span class="k">return</span> <span class="nx">next</span><span class="p">()</span> <span class="k">if</span> <span class="nx">isUserExists</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>if you would like you can throw exception i prefer show an error page</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">@respondTo</span><span class="p">(</span>
+			<span class="nv">data:</span>
+				<span class="nv">error: </span><span class="s2">&quot;USER_NOT_FOUND&quot;</span>
+			<span class="nv">html:</span>
+				<span class="nv">layout: </span><span class="s2">&quot;layouts/notfound&quot;</span>
+				<span class="nv">template: </span><span class="s2">&quot;user/notfound&quot;</span>
+			<span class="nv">json: </span><span class="kc">true</span>
+			<span class="nv">status: </span><span class="mi">404</span>
+			<span class="nx">req</span><span class="p">,</span> <span class="nx">res</span>
+		<span class="p">)</span>
+	</pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p><code>_attachmentExists</code> method works like _userExists.</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nv">_attachmentExists: </span><span class="nf">( id ) -&gt;</span>
+		<span class="nv">ret = </span><span class="kc">false</span>
+		<span class="k">if</span> <span class="o">+</span><span class="nx">id</span> <span class="o">is</span> <span class="mi">1</span>
+			<span class="nv">ret =</span>
+				<span class="nv">attachmentId: </span><span class="nx">id</span>
+				<span class="nv">attachmentProp: </span><span class="s2">&quot;attachmentValue&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>It returns <code>false</code> or an abject, which stores the user information,</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="k">return</span> <span class="nx">ret</span>
+	</pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p><code>attachmentExists</code> is like <code>userExists</code> method.</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nv">attachmentExists: </span><span class="nf">( req, res, next ) -&gt;</span>
+		
+		<span class="nv">attachmentInfo = </span><span class="nx">@_attachmentExists</span><span class="p">(</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">aid</span> <span class="p">)</span>
+		</pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Storing infos for <code>next()</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nv">req.attachmentInfo = </span><span class="nx">attachmentInfo</span>
+		
+		
+		<span class="k">return</span> <span class="nx">next</span><span class="p">()</span> <span class="k">if</span> <span class="nx">attachmentInfo</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>If you would like you can throw exception i prefer show an error page.</p>             </td>             <td class="code">               <div class="highlight"><pre>		<span class="nx">@respondTo</span><span class="p">(</span>
+			<span class="nv">data:</span>
+				<span class="nv">error: </span><span class="s2">&quot;ATTACHMENT_NOT_FOUND&quot;</span>
+			<span class="nv">html:</span>
+				<span class="nv">layout: </span><span class="s2">&quot;layouts/notfound&quot;</span>
+				<span class="nv">template: </span><span class="s2">&quot;attachment/notfound&quot;</span>
+			<span class="nv">json: </span><span class="kc">true</span>
+			<span class="nv">status: </span><span class="mi">404</span>
+			<span class="nx">req</span><span class="p">,</span> <span class="nx">res</span>
+		<span class="p">)</span>
+	</pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>The <code>getById</code> which calls the renderer.</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="nv">getById: </span><span class="nf">( req, res ) -&gt;</span>
+		
+		<span class="nx">@respondTo</span><span class="p">(</span>
+			<span class="nv">data: </span>
+				<span class="nv">userInfo: </span><span class="nx">req</span><span class="p">.</span><span class="nx">userInfo</span>
+				<span class="nv">attachmentInfo: </span><span class="nx">req</span><span class="p">.</span><span class="nx">attachmentInfo</span>
+			<span class="nv">html:</span>
+				<span class="nv">layout: </span><span class="kc">false</span>
+			<span class="nv">json: </span><span class="kc">true</span>
+			<span class="nv">status: </span><span class="mi">200</span>
+			<span class="nx">req</span><span class="p">,</span> <span class="nx">res</span>
+		<span class="p">)</span>
+		
+<span class="nv">module.exports = </span><span class="nx">AttachmentController</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
